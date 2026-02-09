@@ -1,4 +1,7 @@
+import io
+
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QLineEdit, QVBoxLayout, QMainWindow
 import sys
 from ui_file import Ui_MainWindow
@@ -15,8 +18,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_text(self):
         self.coords = self.Get_Coord.text()
         print(self.coords.split())
+
         resp = get_image(list(map(float, self.coords.split())))
-        self.Map.setPixmap(resp.content)
+
+        with open("map.png", "wb") as f:
+            f.write(resp.content)
+
+        pixmap = QPixmap("map.png")
+        self.Map.setPixmap(pixmap)
 
     def mouseMoveEvent(self, event):
         self.Get_Coord.setText(f"Координаты: {event.pos().x()}, {event.pos().y()}")

@@ -17,8 +17,6 @@ def get_image(coords):
     response = requests.get(url)
 
     if response.status_code == 200:
-        with open("map.png", "wb") as f:
-            f.write(response.content)
-        print("Карта сохранена как map.png")
+        return response
     else:
         print("Ошибка получения карты", response.status_code)
