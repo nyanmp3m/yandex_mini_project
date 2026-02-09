@@ -1,8 +1,11 @@
 import requests
 
-def get_image(coords, scale=14):
+def get_image(coord=None, scale=14):
+    if coord in [None, []]:
+        coord = [37.620070, 55.753630]
+
     api_key = '4a7a4d44-c5f2-4f2b-8013-584ec200248d'
-    longitude, latitude = coords
+    longitude, latitude = coord
     delta = 0.01
     size = "450,450"
 
