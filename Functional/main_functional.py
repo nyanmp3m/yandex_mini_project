@@ -3,6 +3,8 @@ from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QLineEdi
 import sys
 from ui_file import Ui_MainWindow
 
+from python.api_request import get_image
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
@@ -12,6 +14,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_text(self):
         self.coords = self.Get_Coord.text()
+        print(self.coords.split())
+        resp = get_image(list(map(float, self.coords.split())))
+        self.Map.setPixmap(resp.content)
 
     def mouseMoveEvent(self, event):
         self.Get_Coord.setText(f"Координаты: {event.pos().x()}, {event.pos().y()}")

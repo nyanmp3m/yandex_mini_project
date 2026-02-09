@@ -2,8 +2,7 @@ import requests
 
 def get_image(coords):
     api_key = '4a7a4d44-c5f2-4f2b-8013-584ec200248d'
-    longitude = 37.620070
-    latitude = 55.753630
+    longitude, latitude = coords
     delta = 0.01
     size = "450,450"
 
