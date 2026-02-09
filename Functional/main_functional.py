@@ -1,14 +1,11 @@
-import io
-
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QLineEdit, QVBoxLayout, QMainWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow
 import sys
-from ui_file import Ui_MainWindow
+from design.python_files.MainWindow_class import MainWindow_class
 
 from python.api_request import get_image
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, MainWindow_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -17,7 +14,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_text(self):
         self.coords = self.Get_Coord.text()
-        print(self.coords.split())
 
         resp = get_image(list(map(float, self.coords.split())))
 
