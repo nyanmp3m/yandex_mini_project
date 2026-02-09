@@ -1,6 +1,6 @@
 import requests
 
-def get_image(coords):
+def get_image(coords, scale=14):
     api_key = '4a7a4d44-c5f2-4f2b-8013-584ec200248d'
     longitude, latitude = coords
     delta = 0.01
@@ -10,7 +10,7 @@ def get_image(coords):
         "https://static-maps.yandex.ru/1.x/"
         f"?ll={longitude},{latitude}"
         f"&size={size}"
-        "&z=14"
+        f"&z={scale}"
         "&l=map"
     )
 
