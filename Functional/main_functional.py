@@ -27,9 +27,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pixmap = QPixmap("map.png")
         self.Map.setPixmap(pixmap)
 
-    def mouseMoveEvent(self, event):
-        self.Get_Coord.setText(f"Координаты: {event.pos().x()}, {event.pos().y()}")
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
