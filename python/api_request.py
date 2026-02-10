@@ -1,23 +1,24 @@
 import requests
 
-def get_image(coord=None, scale=14):
+def get_image(coord=None, scale=14, theme='light'):
     if coord in [None, []]:
         coord = [37.620070, 55.753630]
 
-    api_key = '4a7a4d44-c5f2-4f2b-8013-584ec200248d'
     longitude, latitude = coord
     delta = 0.01
     size = "450,450"
 
-    url = (
-        "https://static-maps.yandex.ru/1.x/"
-        f"?ll={longitude},{latitude}"
-        f"&size={size}"
-        f"&z={scale}"
-        "&l=map"
-    )
+    server_address = 'https://static-maps.yandex.ru/v1?'
+    api_key = '4a7a4d44-c5f2-4f2b-8013-584ec200248d'
+    ll_spn = f'&ll={longitude},{latitude}'
 
-    response = requests.get(url)
+    scale_api = f"&z={scale}"
+    size_api = f"&size=450,450"
+    theme_api = f"&theme={theme}"
+    maptype_api = f"&maptype=map"
+
+    map_request = f"{server_address}apikey={api_key}{ll_spn}{scale_api}{size_api}{theme_api}{maptype_api}"
+    response = requests.get(map_request)
 
     if response.status_code == 200:
         return response

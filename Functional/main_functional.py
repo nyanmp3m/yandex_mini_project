@@ -32,7 +32,7 @@ class MainWindow(QMainWindow, MainWindow_class):
 
     def get_map_image(self, coord):
         try:
-            resp = get_image(coord, self.scale)
+            resp = get_image(coord, self.scale, self.current_theme)
             with open("map.png", "wb") as f:
                 f.write(resp.content)
             f.close()
@@ -121,7 +121,6 @@ class MainWindow(QMainWindow, MainWindow_class):
                 checked_rbt = rbt.objectName()
         return [data, checked_rbt]
 
-
     def apply_light_theme(self):
         self.setStyleSheet("""
             QWidget {
@@ -154,13 +153,8 @@ class MainWindow(QMainWindow, MainWindow_class):
         elif data_rbt[1] == 'dark_theme_rbt':
             self.apply_dark_theme()
             self.current_theme = 'dark'
-
-        # if self.current_theme == 'light':
-        #     self.apply_dark_theme()
-        #     self.current_theme = 'dark'
-        # else:
-        #     self.apply_light_theme()
-        #     self.current_theme = 'light'
+        self.get_map_image(self.last_coord)
+        self.display_map()
 
 
 if __name__ == "__main__":
