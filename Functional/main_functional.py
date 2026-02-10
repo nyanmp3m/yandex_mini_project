@@ -1,9 +1,7 @@
 import sys
-import json
 
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QMainWindow
-from PyQt6.QtGui import QKeyEvent
 from PyQt6.QtCore import Qt
 
 from design.python_files.MainWindow_class import MainWindow_class
@@ -18,8 +16,10 @@ class MainWindow(QMainWindow, MainWindow_class):
 
         self.scale = 14
         self.delta = 0.01911
-        self.radio_buttons = [self.dark_theme_rbt, self.light_theme_rbt]
+        self.radio_buttons_theme = [self.dark_theme_rbt, self.light_theme_rbt]
+        self.radio_buttons_maptype = [self.base_rbt, self.car_rbt, self.public_car_rbt, self.admin_rbt]
 
+        self.current_maptype = 'map'
         self.current_theme = 'light'
         self.apply_light_theme()
 
@@ -28,11 +28,11 @@ class MainWindow(QMainWindow, MainWindow_class):
         self.last_coord = [37.620070, 55.753630]
 
         self.display_btn.clicked.connect(self.get_text)
-        self.apply_them_btn.clicked.connect(self.toggle_theme)
+        self.apply_them_btn.clicked.connect(self.apply_changes)
 
     def get_map_image(self, coord):
         try:
-            resp = get_image(coord, self.scale, self.current_theme)
+            resp = get_image(coord, self.scale, theme=self.current_theme, maptype=self.current_maptype)
             with open("map.png", "wb") as f:
                 f.write(resp.content)
             f.close()
@@ -111,11 +111,11 @@ class MainWindow(QMainWindow, MainWindow_class):
 
         super().keyPressEvent(event)
 
-    def check_radio_buttons(self):
+    def check_radio_buttons(self, radio_buttons):
         data = {}
         checked_rbt = None
 
-        for rbt in self.radio_buttons:
+        for rbt in radio_buttons:
             data[rbt.objectName()] = rbt.isChecked()
             if rbt.isChecked():
                 checked_rbt = rbt.objectName()
@@ -145,14 +145,25 @@ class MainWindow(QMainWindow, MainWindow_class):
             }
         """)
 
-    def toggle_theme(self):
-        data_rbt = self.check_radio_buttons()
+    def apply_changes(self):
+        data_rbt = self.check_radio_buttons(self.radio_buttons_theme)
         if data_rbt[1] == 'light_theme_rbt':
             self.apply_light_theme()
             self.current_theme = 'light'
         elif data_rbt[1] == 'dark_theme_rbt':
             self.apply_dark_theme()
             self.current_theme = 'dark'
+
+        data_rbt = self.check_radio_buttons(self.radio_buttons_maptype)
+        if data_rbt[1] == 'base_rbt':
+            self.current_maptype = 'map'
+        elif data_rbt[1] == 'car_rbt':
+            self.current_maptype = 'driving'
+        elif data_rbt[1] == 'public_car_rbt':
+            self.current_maptype = 'transit'
+        elif data_rbt[1] == 'admin_rbt':
+            self.current_maptype = 'admin'
+
         self.get_map_image(self.last_coord)
         self.display_map()
 
