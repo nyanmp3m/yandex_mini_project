@@ -10,6 +10,7 @@ from design.python_files.MainWindow_class import MainWindow_class
 
 from python.api_request import get_image
 
+
 class MainWindow(QMainWindow, MainWindow_class):
     def __init__(self):
         super().__init__()
@@ -17,12 +18,17 @@ class MainWindow(QMainWindow, MainWindow_class):
 
         self.scale = 14
         self.delta = 0.01911
+        self.radio_buttons = [self.dark_theme_rbt, self.light_theme_rbt]
+
+        self.current_theme = 'light'
+        self.apply_light_theme()
 
         self.flag_get_coord_led = True
 
         self.last_coord = [37.620070, 55.753630]
 
         self.display_btn.clicked.connect(self.get_text)
+        self.apply_them_btn.clicked.connect(self.toggle_theme)
 
     def get_map_image(self, coord):
         try:
@@ -78,18 +84,22 @@ class MainWindow(QMainWindow, MainWindow_class):
         elif event.key() == Qt.Key.Key_Up:
             self.get_map_image([self.last_coord[0], self.last_coord[1] + 0.0002])
             self.display_map()
+
             self.last_coord = [self.last_coord[0], self.last_coord[1] + 0.0002]
         elif event.key() == Qt.Key.Key_Down:
             self.get_map_image([self.last_coord[0], self.last_coord[1] - 0.0002])
             self.display_map()
+
             self.last_coord = [self.last_coord[0], self.last_coord[1] - 0.0002]
         elif event.key() == Qt.Key.Key_Left:
             self.get_map_image([self.last_coord[0] - 0.0002, self.last_coord[1]])
             self.display_map()
+
             self.last_coord = [self.last_coord[0] - 0.0002, self.last_coord[1]]
         elif event.key() == Qt.Key.Key_Right:
             self.get_map_image([self.last_coord[0] + 0.0002, self.last_coord[1]])
             self.display_map()
+
             self.last_coord = [self.last_coord[0] + 0.0002, self.last_coord[1]]
         elif event.key() == Qt.Key.Key_L:
             self.flag_get_coord_led = not self.flag_get_coord_led
@@ -97,11 +107,60 @@ class MainWindow(QMainWindow, MainWindow_class):
             self.display_btn.setEnabled(self.flag_get_coord_led)
             self.get_coord_led_chb.setEnabled(self.flag_get_coord_led)
 
-        print(self.last_coord, event.key())
-
         self.current_scale_lbl.setText(f'Текущий маштаб карты: {self.scale}')
 
         super().keyPressEvent(event)
+
+    def check_radio_buttons(self):
+        data = {}
+        checked_rbt = None
+
+        for rbt in self.radio_buttons:
+            data[rbt.objectName()] = rbt.isChecked()
+            if rbt.isChecked():
+                checked_rbt = rbt.objectName()
+        return [data, checked_rbt]
+
+
+    def apply_light_theme(self):
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #ffffff;
+                color: #000000;
+            }
+            QPushButton {
+                background-color: #e0e0e0;
+                color: #000000;
+            }
+        """)
+
+    def apply_dark_theme(self):
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: #ffffff;
+            }
+            QPushButton {
+                background-color: #444444;
+                color: #ffffff;
+            }
+        """)
+
+    def toggle_theme(self):
+        data_rbt = self.check_radio_buttons()
+        if data_rbt[1] == 'light_theme_rbt':
+            self.apply_light_theme()
+            self.current_theme = 'light'
+        elif data_rbt[1] == 'dark_theme_rbt':
+            self.apply_dark_theme()
+            self.current_theme = 'dark'
+
+        # if self.current_theme == 'light':
+        #     self.apply_dark_theme()
+        #     self.current_theme = 'dark'
+        # else:
+        #     self.apply_light_theme()
+        #     self.current_theme = 'light'
 
 
 if __name__ == "__main__":

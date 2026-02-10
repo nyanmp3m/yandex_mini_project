@@ -22,4 +22,4 @@ def get_image(coord=None, scale=14):
     if response.status_code == 200:
         return response
     else:
-        print("Ошибка получения карты", response.status_code)
+        print("Ошибка получения карты", response.status_code, response.text)
