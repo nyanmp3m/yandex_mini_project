@@ -1,8 +1,13 @@
+from email.headerregistry import Address
+
 import requests
 
 
 def get_coord(address=None, rc=10):
     try:
+        if not address:
+            address = 'Якутск'
+
         server_address = 'https://geocode-maps.yandex.ru/v1?'
         api_key = '8013b162-6b42-4997-9691-77b7074026e0'
 

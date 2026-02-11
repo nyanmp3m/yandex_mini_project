@@ -23,6 +23,7 @@ class MainWindow(QMainWindow, MainWindow_class):
 
         self.current_maptype = 'map'
         self.current_theme = 'light'
+        self.last_mark = None
         self.apply_light_theme()
 
         self.flag_get_coord_led = True
@@ -32,6 +33,7 @@ class MainWindow(QMainWindow, MainWindow_class):
         self.display_btn.clicked.connect(self.get_text)
         self.apply_them_btn.clicked.connect(self.apply_changes)
         self.find_object_btn.clicked.connect(self.find_object)
+        self.drop_search_btn.clicked.connect(self.drop_search)
 
     def get_map_image(self, coord):
         try:
@@ -186,7 +188,18 @@ class MainWindow(QMainWindow, MainWindow_class):
 
         self.add_mark(toponym_coodrinates)
         self.get_map_image(toponym_coodrinates)
+
         self.last_coord = toponym_coodrinates
+        self.last_mark = f'{toponym_coodrinates[0]},{toponym_coodrinates[1]},vkbkm'
+
+        self.display_map()
+
+    def drop_search(self):
+        if self.last_mark in self.marks:
+            self.marks.remove(self.last_mark)
+        else:
+            self.search_bar_led.setText("Уже удалена")
+        self.get_map_image(self.last_coord)
         self.display_map()
 
 

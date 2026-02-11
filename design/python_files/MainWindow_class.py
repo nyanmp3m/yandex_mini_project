@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'qt_design_5.ui'
+# Form implementation generated from reading ui file 'qt_design_6.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.2
 #
@@ -100,6 +100,12 @@ class MainWindow_class(object):
         font.setPointSize(14)
         self.find_object_btn.setFont(font)
         self.find_object_btn.setObjectName("find_object_btn")
+        self.drop_search_btn = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.drop_search_btn.setGeometry(QtCore.QRect(10, 360, 321, 28))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.drop_search_btn.setFont(font)
+        self.drop_search_btn.setObjectName("drop_search_btn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 925, 26))
@@ -127,3 +133,4 @@ class MainWindow_class(object):
         self.public_car_rbt.setText(_translate("MainWindow", "Общ авто"))
         self.admin_rbt.setText(_translate("MainWindow", "Административка"))
         self.find_object_btn.setText(_translate("MainWindow", "Найти"))
+        self.drop_search_btn.setText(_translate("MainWindow", "Сбросиить поиск"))
