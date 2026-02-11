@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'qt_design_4.ui'
+# Form implementation generated from reading ui file 'qt_design_5.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.2
 #
@@ -91,6 +91,15 @@ class MainWindow_class(object):
         self.admin_rbt.setFont(font)
         self.admin_rbt.setObjectName("admin_rbt")
         self.map_type_layout.addWidget(self.admin_rbt)
+        self.search_bar_led = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.search_bar_led.setGeometry(QtCore.QRect(10, 290, 321, 31))
+        self.search_bar_led.setObjectName("search_bar_led")
+        self.find_object_btn = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.find_object_btn.setGeometry(QtCore.QRect(10, 330, 321, 28))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.find_object_btn.setFont(font)
+        self.find_object_btn.setObjectName("find_object_btn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 925, 26))
@@ -117,3 +126,4 @@ class MainWindow_class(object):
         self.car_rbt.setText(_translate("MainWindow", "Авто"))
         self.public_car_rbt.setText(_translate("MainWindow", "Общ авто"))
         self.admin_rbt.setText(_translate("MainWindow", "Административка"))
+        self.find_object_btn.setText(_translate("MainWindow", "Найти"))

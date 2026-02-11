@@ -1,6 +1,6 @@
 import requests
 
-def get_image(coord=None, scale=14, theme='light', maptype='map'):
+def get_image(coord=None, scale=14, marks=None, theme='light', maptype='map'):
     if coord in [None, []]:
         coord = [37.620070, 55.753630]
 
@@ -19,6 +19,9 @@ def get_image(coord=None, scale=14, theme='light', maptype='map'):
     lang = f'&lang=ru_RU'
 
     map_request = f"{server_address}apikey={api_key}{ll_spn}{scale_api}{size_api}{theme_api}{maptype_api}{lang}"
+    if marks:
+        map_request += f'&pt={'~'.join(marks)}'
+
     response = requests.get(map_request)
 
     if response.status_code == 200:
