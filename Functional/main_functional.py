@@ -6,7 +6,8 @@ from PyQt6.QtCore import Qt
 
 from design.python_files.MainWindow_class import MainWindow_class
 
-from python.api_request import get_image
+from python.api_request_staticMap import get_image
+from python.api_request_geocode import get_coord
 
 
 class MainWindow(QMainWindow, MainWindow_class):
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow, MainWindow_class):
         self.delta = 0.01911
         self.radio_buttons_theme = [self.dark_theme_rbt, self.light_theme_rbt]
         self.radio_buttons_maptype = [self.base_rbt, self.car_rbt, self.public_car_rbt, self.admin_rbt]
+        self.marks = []
 
         self.current_maptype = 'map'
         self.current_theme = 'light'
@@ -29,16 +31,18 @@ class MainWindow(QMainWindow, MainWindow_class):
 
         self.display_btn.clicked.connect(self.get_text)
         self.apply_them_btn.clicked.connect(self.apply_changes)
+        self.find_object_btn.clicked.connect(self.find_object)
 
     def get_map_image(self, coord):
         try:
-            resp = get_image(coord, self.scale, theme=self.current_theme, maptype=self.current_maptype)
+            resp = get_image(coord, self.scale, theme=self.current_theme, maptype=self.current_maptype,
+                             marks=self.marks)
             with open("map.png", "wb") as f:
                 f.write(resp.content)
             f.close()
 
-        except Exception:
-            print("Ошибка")
+        except Exception as exc:
+            print("Ошибка", exc)
 
     def display_map(self):
         pixmap = QPixmap("map.png")
@@ -165,6 +169,24 @@ class MainWindow(QMainWindow, MainWindow_class):
             self.current_maptype = 'admin'
 
         self.get_map_image(self.last_coord)
+        self.display_map()
+
+    def add_mark(self, coord):
+        self.marks.append(f'{coord[0]},{coord[1]},vkbkm')
+
+    def find_object(self):
+        address = self.search_bar_led.text()
+        response = get_coord(address)
+
+        json_response = response.json()
+        toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+        toponym_address = toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
+        toponym_coodrinates = toponym["Point"]["pos"]
+        toponym_coodrinates = list(map(float, toponym_coodrinates.split()))
+
+        self.add_mark(toponym_coodrinates)
+        self.get_map_image(toponym_coodrinates)
+        self.last_coord = toponym_coodrinates
         self.display_map()
 
 
