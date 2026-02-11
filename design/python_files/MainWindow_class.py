@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'qt_design_6.ui'
+# Form implementation generated from reading ui file 'qt_design_7.ui'
 #
 # Created by: PyQt6 UI code generator 6.10.2
 #
@@ -106,6 +106,10 @@ class MainWindow_class(object):
         font.setPointSize(14)
         self.drop_search_btn.setFont(font)
         self.drop_search_btn.setObjectName("drop_search_btn")
+        self.information_tbr = QtWidgets.QTextBrowser(parent=self.centralwidget)
+        self.information_tbr.setGeometry(QtCore.QRect(10, 400, 321, 151))
+        self.information_tbr.setObjectName("information_tbr")
+        self.information_tbr.setEnabled(False)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 925, 26))

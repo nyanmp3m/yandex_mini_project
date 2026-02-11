@@ -176,6 +176,11 @@ class MainWindow(QMainWindow, MainWindow_class):
     def add_mark(self, coord):
         self.marks.append(f'{coord[0]},{coord[1]},vkbkm')
 
+    def print_information(self, full_address):
+        text = f"""Full address: {full_address}\n
+        """
+        self.information_tbr.setPlainText(text)
+
     def find_object(self):
         address = self.search_bar_led.text()
         response = get_coord(address)
@@ -185,6 +190,8 @@ class MainWindow(QMainWindow, MainWindow_class):
         toponym_address = toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
         toponym_coodrinates = toponym["Point"]["pos"]
         toponym_coodrinates = list(map(float, toponym_coodrinates.split()))
+
+        self.print_information(toponym_address)
 
         self.add_mark(toponym_coodrinates)
         self.get_map_image(toponym_coodrinates)
@@ -199,6 +206,8 @@ class MainWindow(QMainWindow, MainWindow_class):
             self.marks.remove(self.last_mark)
         else:
             self.search_bar_led.setText("Уже удалена")
+        self.information_tbr.clear()
+
         self.get_map_image(self.last_coord)
         self.display_map()
 
